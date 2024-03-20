@@ -18,6 +18,7 @@ exports.LoginUser = {
             minUppercase: 1,
             minNumbers: 1,
         },
+        
         errorMessage: "Password must be greater than 5 and contain at least one uppercase letter, one lowercase letter, and one number",
     }
 }

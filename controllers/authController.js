@@ -2,6 +2,9 @@ const { findUser, addUser } = require("../models/userModel");
 const jwt = require("jsonwebtoken");
 const crypto = require("crypto");
 const { body, validationResult } = require('express-validator');
+var fs = require('fs');
+const Logger =require('../helpers/logger');
+const logger = new Logger('auth-login')
 
 
 //User  Login Fun
@@ -9,18 +12,23 @@ exports.userLogin = (req, res) => {
     const { email, password } = req.body;
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
+        logger.error({Validation:errors})
         res.formError(errors);
     } else {
         findUser(email, password, (result) => {
+            
             if (result) {
                 const token = generateToken();
                 console.log('token??', token);
+                logger.success(token)
               return res.response({ token }, "login successfully done!!", 200);
             } else {
+                logger.error({Result:result})
                 res.response({}, "invalid login !!", 201);
             }
-
         });
+        
+
     }
 
 }
