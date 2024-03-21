@@ -1,0 +1,28 @@
+      For  Creating  Migration  and Seeder We use Sequelize
+
+1) Install Sequelize  :-  npm install --save sequelize
+2) npx sequelize-cli init
+3) npm install --save sequelize
+4) npx sequelize-cli init
+    after this it generate three files:
+     1) config.json
+     2) migrations
+     3) seeder
+
+Generate Migration 
+
+1)npx sequelize-cli model:generate --name admin --attributes name:string,email:string
+2) npx sequelize-cli db:migrate
+3) npm install mysql2
+4) npx sequelize-cli db:migrate
+
+npx sequelize-cli db:drop   :- this command is used to drop the database
+
+Delete all the migrated table using this command:-
+ npx sequelize-cli db:migrate:undo:all   
+
+Delete Single Migrated Table Using This Command:-
+    npx sequelize-cli db:migrate:undo --name 20240321064831-create-admin.js
+
+For Creating Seeder:-
+npx sequelize-cli seed:generate --name student-add
