@@ -5,15 +5,8 @@ const COLOR = [{ERROR: '\x1b[31m'}, {SUCCESS: '\x1b[32m'}, {INFO: '\x1b[34m'}, {
 class Logger {
 	constructor(name, dir="./logs", cacheSize=100) {
 		this.name = name;
-		if (!fs.existsSync(dir)) fs.mkdirSync(dir);
-        const fileName = `${
-			new Date().toISOString().replaceAll(':', '-').replace('T',' ').split(' ')[0]
-		}`
-		this.path = path.join(dir, `${
-			new Date(fileName).getTime()
-		}-${this.name}.log`);
-		this.cacheSize = cacheSize;
-			this.cache = []
+		this.createDirRecursively(dir)
+	    this.cache = []
 	}
 
     writeLogs(level, message) {
@@ -23,11 +16,9 @@ class Logger {
         const consoleColor = COLOR.filter((res) => res.hasOwnProperty(level))[0]
         console.log(consoleColor[level] + output + "\x1b[0m")
         this.cache.push(output)
-    //if (this.cache.length >= this.cacheSize) {
         fs.appendFileSync(this.path, this.cache.map(l => `${l}\n`).join(''))
             this.cache = []
         }
-    //}
 
     error(message){
         this.writeLogs('ERROR', message)
@@ -40,6 +31,17 @@ class Logger {
     success(message){
         this.writeLogs('SUCCESS', message)
     }
-    
+    createDirRecursively(dir) {
+        if (!fs.existsSync(dir)) {        
+            this.createDirRecursively(path.join(dir, ".."));
+            fs.mkdirSync(dir);
+        }
+        const fileName = `${
+			new Date().toISOString().replaceAll(':', '-').replace('T',' ').split(' ')[0]
+		}`
+		this.path = path.join(dir, `${
+			new Date(fileName).getTime()
+		}-${this.name}.log`);
+    }
 }
 module.exports = Logger;

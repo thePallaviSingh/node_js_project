@@ -4,7 +4,7 @@ const crypto = require("crypto");
 const { body, validationResult } = require('express-validator');
 var fs = require('fs');
 const Logger =require('../helpers/logger');
-const logger = new Logger('auth-login')
+const logger = new Logger('auth-login','storage/logs')
 
 
 //User  Login Fun
